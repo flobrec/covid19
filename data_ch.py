@@ -2,27 +2,28 @@
 """
 Created on Mon Mar 16 16:04:42 2020
 
-@author: changed
+@author: Florian Albrecht
+
+part of the code from https://www.kaggle.com/terenceshin/coronavirus-data-visualizations
 """
 
 import numpy as np 
 import pandas as pd 
 import plotly as py
 import plotly.express as px
-import plotly.graph_objs as go
-from plotly.subplots import make_subplots
-from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
-
 
         
-df = pd.read_csv("https://raw.githubusercontent.com/openZH/covid_19/master/COVID19_Cases_Cantons_CH_total.csv", error_bad_lines=False)
+df_orig = pd.read_csv("https://raw.githubusercontent.com/daenuprobst/covid19-cases-switzerland/master/covid19_cases_switzerland.csv", sep=',', index_col='Date', error_bad_lines=False)
 
-df_ch = df[df['canton']=='CH']
-df_cantons = df[df['canton']!='CH']
+df_orig = df_orig.fillna(method='pad')
+df = df_orig.stack().reset_index().rename(columns={'level_0':'Date','level_1':'Canton', 0:'Cases'})
 
-df_ch.plot(x='date',y='tested_pos',logy=True)
+df_ch = df[df['Canton']=='CH']
+df_cantons = df[df['Canton']!='CH']
 
-bar_data = df_cantons.groupby(['canton', 'date'])['tested_pos'].sum().reset_index().sort_values('date', ascending=True)
+bar_data = df_cantons.groupby(['Canton', 'Date'])['Cases'].sum().reset_index().sort_values('Date', ascending=True)
 
-fig = px.bar(bar_data, x="date", y="tested_pos", color='canton', text = 'tested_pos', orientation='v', height=600, title='Cases')
+fig = px.bar(bar_data, x="Date", y="Cases", color='Canton', text = 'Cases', orientation='v', height=600, title='Cases for Cantons')
+#fig.update_yaxes(type="log")
+fig.update_xaxes(tickangle=-90, showticklabels=True, type = 'category')
 fig.show(renderer="browser")
