@@ -51,11 +51,12 @@ max_color = max(df_cantons['Cases'])
 fig = px.choropleth_mapbox(df, geojson=cantons, locations='Canton', color='Cases',
                            color_continuous_scale="sunsetdark",
                             range_color=(0, max_color),
-                            mapbox_style="carto-positron",
+                            mapbox_style="carto-darkmatter",
                             zoom=7.5, center = {"lat": 47.05048, "lon": 8.30635},
                             opacity=0.5,
                             labels={'Cases':'Confirmed cases'},
-                            animation_frame="Date"
+                            animation_frame="Date",
+                           template="plotly_dark"
                           )
 
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
