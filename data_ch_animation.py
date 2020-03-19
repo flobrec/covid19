@@ -39,12 +39,18 @@ df_cantons = df[df['Canton']!='CH']
 
 bar_data = df_cantons.groupby(['Canton', 'Date'])['Cases'].sum().reset_index().sort_values('Date', ascending=True)
 
-# =============================================================================
-# fig = px.bar(bar_data, x="Date", y="Cases", color='Canton', text = 'Cases', orientation='v', height=600, title='Cases for Cantons')
-# #fig.update_yaxes(type="log")
-# fig.update_xaxes(tickangle=-90, showticklabels=True, type = 'category')
-# fig.show(renderer="browser")
-# =============================================================================
+fig = px.bar(bar_data, x="Date", y="Cases",
+             color='Canton', text = 'Cases',
+             orientation='v',
+             height=600,
+             title='Cases for Cantons',
+             template="plotly_dark",
+             color_discrete_sequence= px.colors.cyclical.IceFire
+             )
+
+#fig.update_yaxes(type="log")
+fig.update_xaxes(tickangle=-90, showticklabels=True, type = 'category')
+fig.show(renderer="browser")
 
 # animation
 max_color = max(df_cantons['Cases'])
