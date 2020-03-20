@@ -50,10 +50,16 @@ fig = px.bar(bar_data, x="Date", y="Cases",
              height=600,
              title='Cases for Cantons',
              template="plotly_dark",
-             color_discrete_sequence= px.colors.cyclical.IceFire
+             color_discrete_sequence= px.colors.cyclical.IceFire,
+             hover_name='Canton'
              )
 
 #fig.update_yaxes(type="log")
+# format the tool tips
+fig.update_traces(hovertemplate = '<b>Canton: %{hovertext}</b><br>'
+              +'Date: %{x}<br>'
+              +'Cases: %{y:.0f}'
+              )
 fig.update_xaxes(tickangle=-90, showticklabels=True, type = 'category')
 fig.show(renderer="browser")
 
@@ -66,11 +72,20 @@ fig = px.bar(bar_data_pc, x="Date", y="CasesPer100k",
              height=600,
              title="Cases for Cantons per 100'000 inhabitants",
              template="plotly_dark",
-             color_discrete_sequence= px.colors.cyclical.IceFire
+             color_discrete_sequence= px.colors.cyclical.IceFire,
+             hover_name='Canton'
              )
 
 #fig.update_yaxes(type="log")
 fig.update_xaxes(tickangle=-90, showticklabels=True, type = 'category')
+fig.update_traces(texttemplate='%{text:.1f}', textposition='inside')
+
+# format the tool tips
+fig.update_traces(hovertemplate = '<b>Canton: %{hovertext}</b><br>'
+              +'Date: %{x}<br>'
+              +'CasesPer100k: %{y:.1f}'
+              )
+
 fig.show(renderer="browser")
 
 # animation
@@ -84,9 +99,15 @@ fig = px.choropleth_mapbox(df_cantons, geojson=cantons, locations='Canton', colo
                             opacity=0.5,
                             labels={'Cases':'Confirmed cases'},
                             animation_frame="Date",
-                           template="plotly_dark"
+                           template="plotly_dark",
+                           hover_name='Date'
                           )
 
+# format the tool tips
+fig.update_traces(hovertemplate = '<b>Date: %{hovertext}</b><br>'
+              +'Canton: %{location}<br>'
+              +'Cases: %{z:.0f}'
+              )
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 fig.show(renderer="browser")
 
@@ -100,9 +121,15 @@ fig = px.choropleth_mapbox(df_cantons, geojson=cantons, locations='Canton', colo
                             opacity=0.5,
                             labels={'CasesPer100k':"Confirmed cases per 100'000 inhabitants"},
                             animation_frame="Date",
-                           template="plotly_dark"
+                           template="plotly_dark",
+                           hover_name='Date'
                           )
 
+# format the tool tips
+fig.update_traces(hovertemplate = '<b>Date: %{hovertext}</b><br>'
+              +'Canton: %{location}<br>'
+              +'CasesPer100k: %{z:.1f}'
+              )
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 fig.show(renderer="browser")
 
